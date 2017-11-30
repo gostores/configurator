@@ -17,7 +17,7 @@ import (
 	"github.com/gostores/encoding/properties"
 	"github.com/gostores/encoding/toml"
 	"github.com/gostores/encoding/yaml"
-	"github.com/gostores/gonote"
+	"github.com/gostores/notepad"
 )
 
 // ConfigParseError denotes failing to parse configuration file.
@@ -86,7 +86,7 @@ func insensitiviseMap(m map[string]interface{}) {
 }
 
 func absPathify(inPath string) string {
-	gonote.INFO.Println("Trying to resolve absolute path to", inPath)
+	notepad.INFO.Println("Trying to resolve absolute path to", inPath)
 
 	if strings.HasPrefix(inPath, "$HOME") {
 		inPath = userHomeDir() + inPath[5:]
@@ -106,8 +106,8 @@ func absPathify(inPath string) string {
 		return filepath.Clean(p)
 	}
 
-	gonote.ERROR.Println("Couldn't discover absolute path")
-	gonote.ERROR.Println(err)
+	notepad.ERROR.Println("Couldn't discover absolute path")
+	notepad.ERROR.Println(err)
 	return ""
 }
 

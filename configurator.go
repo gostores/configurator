@@ -15,8 +15,8 @@ import (
 	"github.com/gostores/afero"
 	"github.com/gostores/assist"
 	"github.com/gostores/fsnotify"
-	"github.com/gostores/gonote"
 	"github.com/gostores/mapstructure"
+	"github.com/gostores/notepad"
 	"github.com/gostores/pflag"
 )
 
@@ -314,7 +314,7 @@ func AddConfigPath(in string) { v.AddConfigPath(in) }
 func (v *Viper) AddConfigPath(in string) {
 	if in != "" {
 		absin := absPathify(in)
-		gonote.INFO.Println("adding", absin, "to paths to search")
+		notepad.INFO.Println("adding", absin, "to paths to search")
 		if !stringInSlice(absin, v.configPaths) {
 			v.configPaths = append(v.configPaths, absin)
 		}
@@ -337,7 +337,7 @@ func (v *Viper) AddRemoteProvider(provider, endpoint, path string) error {
 		return UnsupportedRemoteProviderError(provider)
 	}
 	if provider != "" && endpoint != "" {
-		gonote.INFO.Printf("adding %s:%s to remote provider list", provider, endpoint)
+		notepad.INFO.Printf("adding %s:%s to remote provider list", provider, endpoint)
 		rp := &defaultRemoteProvider{
 			endpoint: endpoint,
 			provider: provider,
@@ -369,7 +369,7 @@ func (v *Viper) AddSecureRemoteProvider(provider, endpoint, path, secretkeyring 
 		return UnsupportedRemoteProviderError(provider)
 	}
 	if provider != "" && endpoint != "" {
-		gonote.INFO.Printf("adding %s:%s to remote provider list", provider, endpoint)
+		notepad.INFO.Printf("adding %s:%s to remote provider list", provider, endpoint)
 		rp := &defaultRemoteProvider{
 			endpoint:      endpoint,
 			provider:      provider,
@@ -1028,14 +1028,14 @@ func (v *Viper) registerAlias(alias string, key string) {
 			v.aliases[alias] = key
 		}
 	} else {
-		gonote.WARN.Println("Creating circular reference alias", alias, key, v.realKey(key))
+		notepad.WARN.Println("Creating circular reference alias", alias, key, v.realKey(key))
 	}
 }
 
 func (v *Viper) realKey(key string) string {
 	newkey, exists := v.aliases[key]
 	if exists {
-		gonote.DEBUG.Println("Alias", key, "to", newkey)
+		notepad.DEBUG.Println("Alias", key, "to", newkey)
 		return v.realKey(newkey)
 	}
 	return key
@@ -1090,7 +1090,7 @@ func (v *Viper) Set(key string, value interface{}) {
 // and key/value stores, searching in one of the defined paths.
 func ReadInConfig() error { return v.ReadInConfig() }
 func (v *Viper) ReadInConfig() error {
-	gonote.INFO.Println("Attempting to read in config file")
+	notepad.INFO.Println("Attempting to read in config file")
 	filename, err := v.getConfigFile()
 	if err != nil {
 		return err
@@ -1119,7 +1119,7 @@ func (v *Viper) ReadInConfig() error {
 // MergeInConfig merges a new configuration with an existing config.
 func MergeInConfig() error { return v.MergeInConfig() }
 func (v *Viper) MergeInConfig() error {
-	gonote.INFO.Println("Attempting to merge in config file")
+	notepad.INFO.Println("Attempting to merge in config file")
 	filename, err := v.getConfigFile()
 	if err != nil {
 		return err
@@ -1205,7 +1205,7 @@ func mergeMaps(
 	for sk, sv := range src {
 		tk := keyExists(sk, tgt)
 		if tk == "" {
-			gonote.TRACE.Printf("tk=\"\", tgt[%s]=%v", sk, sv)
+			notepad.TRACE.Printf("tk=\"\", tgt[%s]=%v", sk, sv)
 			tgt[sk] = sv
 			if itgt != nil {
 				itgt[sk] = sv
@@ -1215,7 +1215,7 @@ func mergeMaps(
 
 		tv, ok := tgt[tk]
 		if !ok {
-			gonote.TRACE.Printf("tgt[%s] != ok, tgt[%s]=%v", tk, sk, sv)
+			notepad.TRACE.Printf("tgt[%s] != ok, tgt[%s]=%v", tk, sk, sv)
 			tgt[sk] = sv
 			if itgt != nil {
 				itgt[sk] = sv
@@ -1226,27 +1226,27 @@ func mergeMaps(
 		svType := reflect.TypeOf(sv)
 		tvType := reflect.TypeOf(tv)
 		if svType != tvType {
-			gonote.ERROR.Printf(
+			notepad.ERROR.Printf(
 				"svType != tvType; key=%s, st=%v, tt=%v, sv=%v, tv=%v",
 				sk, svType, tvType, sv, tv)
 			continue
 		}
 
-		gonote.TRACE.Printf("processing key=%s, st=%v, tt=%v, sv=%v, tv=%v",
+		notepad.TRACE.Printf("processing key=%s, st=%v, tt=%v, sv=%v, tv=%v",
 			sk, svType, tvType, sv, tv)
 
 		switch ttv := tv.(type) {
 		case map[interface{}]interface{}:
-			gonote.TRACE.Printf("merging maps (must convert)")
+			notepad.TRACE.Printf("merging maps (must convert)")
 			tsv := sv.(map[interface{}]interface{})
 			ssv := assistToMapStringInterface(tsv)
 			stv := assistToMapStringInterface(ttv)
 			mergeMaps(ssv, stv, ttv)
 		case map[string]interface{}:
-			gonote.TRACE.Printf("merging maps")
+			notepad.TRACE.Printf("merging maps")
 			mergeMaps(sv.(map[string]interface{}), ttv, nil)
 		default:
-			gonote.TRACE.Printf("setting value")
+			notepad.TRACE.Printf("setting value")
 			tgt[tk] = sv
 			if itgt != nil {
 				itgt[tk] = sv
@@ -1515,11 +1515,11 @@ func (v *Viper) getConfigFile() (string, error) {
 }
 
 func (v *Viper) searchInPath(in string) (filename string) {
-	gonote.DEBUG.Println("Searching for config in ", in)
+	notepad.DEBUG.Println("Searching for config in ", in)
 	for _, ext := range SupportedExts {
-		gonote.DEBUG.Println("Checking for", filepath.Join(in, v.configName+"."+ext))
+		notepad.DEBUG.Println("Checking for", filepath.Join(in, v.configName+"."+ext))
 		if b, _ := exists(v.fs, filepath.Join(in, v.configName+"."+ext)); b {
-			gonote.DEBUG.Println("Found: ", filepath.Join(in, v.configName+"."+ext))
+			notepad.DEBUG.Println("Found: ", filepath.Join(in, v.configName+"."+ext))
 			return filepath.Join(in, v.configName+"."+ext)
 		}
 	}
@@ -1530,7 +1530,7 @@ func (v *Viper) searchInPath(in string) (filename string) {
 // Search all configPaths for any config file.
 // Returns the first path that exists (and is a config file).
 func (v *Viper) findConfigFile() (string, error) {
-	gonote.INFO.Println("Searching for config in ", v.configPaths)
+	notepad.INFO.Println("Searching for config in ", v.configPaths)
 
 	for _, cp := range v.configPaths {
 		file := v.searchInPath(cp)
