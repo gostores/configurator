@@ -11,12 +11,12 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/gostores/afero"
 	"github.com/gostores/assist"
 	"github.com/gostores/encoding/hcl"
 	"github.com/gostores/encoding/properties"
 	"github.com/gostores/encoding/toml"
 	"github.com/gostores/encoding/yaml"
+	"github.com/gostores/fsintra"
 	"github.com/gostores/notepad"
 )
 
@@ -112,7 +112,7 @@ func absPathify(inPath string) string {
 }
 
 // Check if File / Directory Exists
-func exists(fs afero.Fs, path string) (bool, error) {
+func exists(fs fsintra.Fs, path string) (bool, error) {
 	_, err := fs.Stat(path)
 	if err == nil {
 		return true, nil

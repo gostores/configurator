@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gostores/afero"
 	"github.com/gostores/assist"
+	"github.com/gostores/fsintra"
 	"github.com/gostores/fsnotify"
 	"github.com/gostores/mapstructure"
 	"github.com/gostores/notepad"
@@ -120,7 +120,7 @@ type Viper struct {
 	configPaths []string
 
 	// The filesystem to read config from.
-	fs afero.Fs
+	fs fsintra.Fs
 
 	// A set of remote providers to search for the configuration
 	remoteProviders []*defaultRemoteProvider
@@ -151,7 +151,7 @@ func New() *Viper {
 	v := new(Viper)
 	v.keyDelim = "."
 	v.configName = "config"
-	v.fs = afero.NewOsFs()
+	v.fs = fsintra.NewOsFs()
 	v.config = make(map[string]interface{})
 	v.override = make(map[string]interface{})
 	v.defaults = make(map[string]interface{})
@@ -1100,7 +1100,7 @@ func (v *Viper) ReadInConfig() error {
 		return UnsupportedConfigError(v.getConfigType())
 	}
 
-	file, err := afero.ReadFile(v.fs, filename)
+	file, err := fsintra.ReadFile(v.fs, filename)
 	if err != nil {
 		return err
 	}
@@ -1129,7 +1129,7 @@ func (v *Viper) MergeInConfig() error {
 		return UnsupportedConfigError(v.getConfigType())
 	}
 
-	file, err := afero.ReadFile(v.fs, filename)
+	file, err := fsintra.ReadFile(v.fs, filename)
 	if err != nil {
 		return err
 	}
@@ -1456,8 +1456,8 @@ func (v *Viper) AllSettings() map[string]interface{} {
 }
 
 // SetFs sets the filesystem to use to read configuration.
-func SetFs(fs afero.Fs) { v.SetFs(fs) }
-func (v *Viper) SetFs(fs afero.Fs) {
+func SetFs(fs fsintra.Fs) { v.SetFs(fs) }
+func (v *Viper) SetFs(fs fsintra.Fs) {
 	v.fs = fs
 }
 
