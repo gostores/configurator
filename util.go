@@ -11,13 +11,13 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/gostores/afero"
 	"github.com/gostores/assist"
 	"github.com/gostores/encoding/hcl"
 	"github.com/gostores/encoding/properties"
 	"github.com/gostores/encoding/toml"
 	"github.com/gostores/encoding/yaml"
 	"github.com/gostores/gonote"
-	"github.com/spf13/afero"
 )
 
 // ConfigParseError denotes failing to parse configuration file.

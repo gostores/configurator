@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gostores/afero"
 	"github.com/gostores/assist"
 	"github.com/gostores/fsnotify"
 	"github.com/gostores/gonote"
 	"github.com/gostores/mapstructure"
 	"github.com/gostores/pflag"
-	"github.com/spf13/afero"
 )
 
 var v *Viper
