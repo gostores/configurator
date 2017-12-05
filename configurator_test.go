@@ -497,7 +497,7 @@ func TestUnmarshal(t *testing.T) {
 }
 
 func TestBindPFlags(t *testing.T) {
-	v := New() // create independent Viper object
+	v := New() // create independent Configurator object
 	flagSet := pflag.NewFlagSet("test", pflag.ContinueOnError)
 
 	var testValues = map[string]*string{
@@ -543,7 +543,7 @@ func TestBindPFlagsStringSlice(t *testing.T) {
 		{[]string{"cztery", "piec , szesc"}, "cztery,\"piec , szesc\""}} {
 
 		for _, changed := range []bool{true, false} {
-			v := New() // create independent Viper object
+			v := New() // create independent Configurator object
 			flagSet := pflag.NewFlagSet("test", pflag.ContinueOnError)
 			flagSet.StringSlice("stringslice", testValue.Expected, "test")
 			flagSet.Visit(func(f *pflag.Flag) {
@@ -835,10 +835,10 @@ func TestSub(t *testing.T) {
 	assert.Equal(t, v.Get("clothing.pants.size"), subv.Get("size"))
 
 	subv = v.Sub("clothing.pants.size")
-	assert.Equal(t, (*Viper)(nil), subv)
+	assert.Equal(t, (*Configurator)(nil), subv)
 
 	subv = v.Sub("missing.key")
-	assert.Equal(t, (*Viper)(nil), subv)
+	assert.Equal(t, (*Configurator)(nil), subv)
 }
 
 var yamlMergeExampleTgt = []byte(`

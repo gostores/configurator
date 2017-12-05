@@ -3,13 +3,13 @@ package configurator
 import "github.com/gostores/pflag"
 
 // FlagValueSet is an interface that users can implement
-// to bind a set of flags to viper.
+// to bind a set of flags to Configurator.
 type FlagValueSet interface {
 	VisitAll(fn func(FlagValue))
 }
 
 // FlagValue is an interface that users can implement
-// to bind different flags to viper.
+// to bind different flags to Configurator.
 type FlagValue interface {
 	HasChanged() bool
 	Name() string

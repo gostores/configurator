@@ -18,7 +18,7 @@ const (
 
 func TestNestedOverrides(t *testing.T) {
 	assert := assert.New(t)
-	var v *Viper
+	var v *Configurator
 
 	// Case 0: value overridden by a value
 	overrideDefault(assert, "tom", 10, "tom", 20) // "tom" is first given 10 as default value, then overridden by 20
@@ -75,10 +75,10 @@ func TestNestedOverrides(t *testing.T) {
 	}
 }
 
-func overrideDefault(assert *assert.Assertions, firstPath string, firstValue interface{}, secondPath string, secondValue interface{}) *Viper {
+func overrideDefault(assert *assert.Assertions, firstPath string, firstValue interface{}, secondPath string, secondValue interface{}) *Configurator {
 	return overrideFromLayer(defaultLayer, assert, firstPath, firstValue, secondPath, secondValue)
 }
-func override(assert *assert.Assertions, firstPath string, firstValue interface{}, secondPath string, secondValue interface{}) *Viper {
+func override(assert *assert.Assertions, firstPath string, firstValue interface{}, secondPath string, secondValue interface{}) *Configurator {
 	return overrideFromLayer(overrideLayer, assert, firstPath, firstValue, secondPath, secondValue)
 }
 
@@ -93,7 +93,7 @@ func override(assert *assert.Assertions, firstPath string, firstValue interface{
 //
 // After each assignment, the value is checked, retrieved both by its full path
 // and by its key sequence (successive maps).
-func overrideFromLayer(l layer, assert *assert.Assertions, firstPath string, firstValue interface{}, secondPath string, secondValue interface{}) *Viper {
+func overrideFromLayer(l layer, assert *assert.Assertions, firstPath string, firstValue interface{}, secondPath string, secondValue interface{}) *Configurator {
 	v := New()
 	firstKeys := strings.Split(firstPath, v.keyDelim)
 	if assert == nil ||
@@ -127,7 +127,7 @@ func overrideFromLayer(l layer, assert *assert.Assertions, firstPath string, fir
 
 // deepCheckValue checks that all given keys correspond to a valid path in the
 // configuration map of the given layer, and that the final value equals the one given
-func deepCheckValue(assert *assert.Assertions, v *Viper, l layer, keys []string, value interface{}) {
+func deepCheckValue(assert *assert.Assertions, v *Configurator, l layer, keys []string, value interface{}) {
 	if assert == nil || v == nil ||
 		len(keys) == 0 || len(keys[0]) == 0 {
 		return
