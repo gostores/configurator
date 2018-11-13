@@ -11,13 +11,13 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/gostores/assist"
-	"github.com/gostores/encoding/hcl"
-	"github.com/gostores/encoding/properties"
-	"github.com/gostores/encoding/toml"
-	"github.com/gostores/encoding/yaml"
-	"github.com/gostores/fsintra"
-	"github.com/gostores/notepad"
+	"github.com/govenue/assist"
+	"github.com/govenue/encoding/hcl"
+	"github.com/govenue/encoding/properties"
+	"github.com/govenue/encoding/toml"
+	"github.com/govenue/encoding/yaml"
+	"github.com/govenue/fsintra"
+	"github.com/govenue/notepad"
 )
 
 // ConfigParseError denotes failing to parse configuration file.

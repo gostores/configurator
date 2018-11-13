@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gostores/assist"
-	"github.com/gostores/fsintra"
-	"github.com/gostores/fsnotify"
-	"github.com/gostores/mapstructure"
-	"github.com/gostores/notepad"
-	"github.com/gostores/pflag"
+	"github.com/govenue/assist"
+	"github.com/govenue/fsintra"
+	"github.com/govenue/fsnotify"
+	"github.com/govenue/mapstructure"
+	"github.com/govenue/notepad"
+	"github.com/govenue/pflag"
 )
 
 var v *Configurator
@@ -1291,7 +1291,7 @@ func (v *Configurator) insensitiviseMaps() {
 // Retrieve the first found remote configuration.
 func (v *Configurator) getKeyValueConfig() error {
 	if RemoteConfig == nil {
-		return RemoteConfigError("Enable the remote features by doing a blank import of the configurator/remote package: '_ github.com/gostores/configurator/remote'")
+		return RemoteConfigError("Enable the remote features by doing a blank import of the configurator/remote package: '_ github.com/govenue/configurator/remote'")
 	}
 
 	for _, rp := range v.remoteProviders {

@@ -3,8 +3,8 @@ package configurator
 import (
 	"testing"
 
-	"github.com/gostores/assert"
-	"github.com/gostores/pflag"
+	"github.com/govenue/assert"
+	"github.com/govenue/pflag"
 )
 
 func TestBindFlagValueSet(t *testing.T) {

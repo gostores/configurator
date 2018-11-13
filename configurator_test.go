@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gostores/assert"
-	"github.com/gostores/assist"
-	"github.com/gostores/pflag"
+	"github.com/govenue/assert"
+	"github.com/govenue/assist"
+	"github.com/govenue/pflag"
 )
 
 var yamlExample = []byte(`Hacker: true

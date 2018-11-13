@@ -1,6 +1,6 @@
 package configurator
 
-import "github.com/gostores/pflag"
+import "github.com/govenue/pflag"
 
 // FlagValueSet is an interface that users can implement
 // to bind a set of flags to Configurator.
